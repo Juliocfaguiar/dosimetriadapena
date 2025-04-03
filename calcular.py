@@ -61,6 +61,7 @@ def app():
                     st.write(f"**Bairro:** {resultado[12]}")
                 with col110:
                     st.write(f"**Estado:** {resultado[13]}")
+                    
                 col111,col112,col113,col114 = st.columns(spec=[.25,.50,.50,1])
                 with col111:
                     st.write(f"**Gênero:** {resultado[14]}")
