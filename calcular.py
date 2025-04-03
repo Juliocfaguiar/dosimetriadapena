@@ -30,30 +30,49 @@ def app():
             if resultado:
                 # Exibe os dados do registro encontrado
                 st.success("Registro encontrado:")
-                col100, col200 = st.columns(spec=[1,1])
+                col100, col101,col102,col103,col104 = st.columns(spec=[1,.50,.50,1,1])
                 with col100:
-                    st.write(f"**ID:** {resultado[0]}")
-                    st.write(f"**Data:** {resultado[1]}")
-                    st.write(f"**Hora:** {resultado[2]}")
+                    # st.write(f"**ID:** {resultado[0]}")
+                
+                    # st.write(f"**Data:** {resultado[1]}")
+                
+                    # st.write(f"**Hora:** {resultado[2]}")
+                
                     st.write(f"**Nome Completo:** {resultado[3]}")
+                with col101:
                     st.write(f"**Nacionalidade:** {resultado[4]}")
+                with col102:
                     st.write(f"**Estado Civil:** {resultado[5]}")
+                with col103:
                     st.write(f"**Data de Nascimento:** {resultado[6]}")
+                with col104:
                     st.write(f"**Profissão:** {resultado[7]}")
+                
+                col105,col106,col107,col108,col109,col110 = st.columns(spec=[.75,1,.50,1,1,1])
+                with col105:
                     st.write(f"**CPF:** {resultado[8]}")
-                with col200:
+                with col106:                
                     st.write(f"**Endereço:** {resultado[9]}")
+                with col107:
                     st.write(f"**Número:** {resultado[10]}")
+                with col108:
                     st.write(f"**Complemento:** {resultado[11]}")
+                with col109:
                     st.write(f"**Bairro:** {resultado[12]}")
+                with col110:
                     st.write(f"**Estado:** {resultado[13]}")
+                col111,col112,col113,col114 = st.columns(spec=[.25,.50,.50,1])
+                with col111:
                     st.write(f"**Gênero:** {resultado[14]}")
+                with col112:
                     st.write(f"**Etnia:** {resultado[15]}")
+                with col113:
                     st.write(f"**Acusação:** {resultado[16]}")
+                with col114:
                     st.write(f"**Resumo:** {resultado[17]}")
         
 
-        pass
+        
 # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
     with tab2:
         # Inicializa variáveis de sessão
