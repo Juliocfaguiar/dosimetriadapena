@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from datetime import datetime
 import sqlite3
 import os
@@ -8,11 +9,12 @@ import random
 
 def app():
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-
+    df = pd.read_csv("crimes.csv",sep=";")
     
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
 
-    cpenal = ["Art. 121", "Art. 155", "Art. 157", "Art. 213"," Art. 138"," Art. 139", "Art. 140", "Art. 158", "Art. 148"]
+    cpenal = df['art'].tolist()
+
     civil = ["Casado(a)","Solteiro(a)","Viuvo(a)"]
 
     with st.form("my_form"):
