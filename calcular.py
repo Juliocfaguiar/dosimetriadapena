@@ -146,7 +146,6 @@ def app():
             
         st.subheader("Causas Atenuantes",divider = "green")
 
-
         menoridade = st.checkbox(" menoridade ")
         if menoridade:
             atebox += 1
@@ -178,7 +177,7 @@ def app():
     st.subheader(f"Agravantes = {agrbox}")
 
 
-   
+   # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
 
 
     st.subheader("pena definitiva",divider = "blue")
