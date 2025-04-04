@@ -7,7 +7,7 @@ import home, calcular, cadastro,dashboard
 st.set_page_config(
         page_title = "Dosimetria",
         page_icon =":scales:",
-        layout = "wide",
+        layout = "centered",
 
     )
 
