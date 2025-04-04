@@ -2,9 +2,11 @@ import streamlit as st
 import pandas as pd
 import sqlite3
 
-def app():
-    df = pd.read_csv("crimes.csv",sep=";")
 
+
+def app():
+    
+    df = pd.read_csv("crimes.csv",sep=";")
 
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
     
@@ -25,6 +27,7 @@ def app():
         idRandom = st.text_input("Informe ID",max_chars=4)
     with tab003:
         pass
+    
     if st.button("Buscar", type="primary", use_container_width=True):
     # Conecta ao banco de dados
         conn = sqlite3.connect('cadastro.db')
@@ -192,18 +195,58 @@ def app():
 
 
     st.subheader("pena definitiva",divider = "blue")
+    # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
+    # calculo da pena 
 
- # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-    # Calculo da pena
-    
+    for index, row in df.iterrows():
+        try:
+            if row['art'] == resultado[16]:
+                if pd.notna(row['anoMax']) and pd.notna(row['anoMin']):
+                    result = (row['anoMax'] - row['anoMin']) * 360 
+                    result = result * 2/8
+                    result = result / 360
+                    
+                    result_str = str(result)
+                    split_result = result_str.split(".")
+                    
+                    if len(split_result) > 0 and int(split_result[0]) != 0:
+                        print(f"O resultado final é: {int(split_result[0])} ano(s)")
+                    else:
+                        print("A parte inteira do resultado é zero.")
+                        
+                else:
+                    print("anoMax ou anoMin não possuem valor, não é possível realizar o cálculo.")
+        except KeyError as e:
+            print(f"Erro: A coluna {e} não foi encontrada no DataFrame.")
+            break
 
+    for index, row in df.iterrows():
+        try:
+            if row['art'] == 155:
+                if pd.notna(row['anoMax']) and pd.notna(row['anoMin']):
+                    result = (row['anoMax'] - row['anoMin']) * 360 
+                    result = result * 2/8
+                    result = result / 360
+                    
+                    result_str = str(result)
+                    split_result = result_str.split(".")
+                    
+                    if len(split_result) > 1 and split_result[1] != '0':
+                        decimal_part = int(split_result[1])
+                        final_result = round((decimal_part / 100) * 12, 2)
+                        final_result = round(final_result*10, 2)
+                        final_result = int(final_result)
+                        print(f"O resultado final é: {final_result} mes(es)")
+                    else:
+                        print("A parte decimal é zero, não é possível realizar o cálculo.")
+                        
+                else:
+                    print("anoMax ou anoMin não possuem valor, não é possível realizar o cálculo.")
+        except KeyError as e:
+            print(f"Erro: A coluna {e} não foi encontrada no DataFrame.")
+            break
+    # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
 
-
-
-
-    
-
- # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
     col5,col6,col7 = st.columns(spec=[1,1,1])
     with col5:
         pass
@@ -216,5 +259,4 @@ def app():
     with col7:
         pass
     
-
-        
+    
