@@ -26,7 +26,7 @@ def app():
     with tab003:
         pass
     if st.button("Buscar", type="primary", use_container_width=True):
-        # Conecta ao banco de dados
+    # Conecta ao banco de dados
         conn = sqlite3.connect('cadastro.db')
         cursor = conn.cursor()
 
@@ -40,6 +40,17 @@ def app():
         if resultado:
             # Exibe os dados do registro encontrado
             st.success("Registro encontrado:")
+
+            # Comparação com a coluna "art" do CSV
+            try:
+                if str(resultado[16]) in df['art'].astype(str).values:
+                    st.success(f"O artigo {resultado[16]} foi encontrado no CSV!", icon="✅")
+                else:
+                    st.error(f"O artigo {resultado[16]} não foi encontrado no CSV.", icon="❌")
+            except Exception as e:
+                st.error(f"Erro ao comparar o artigo: {e}")
+
+
             col100, col101,col102,col103,col104 = st.columns(spec=[1,.50,.50,1,1])
             with col100:
                 # st.write(f"**ID:** {resultado[0]}")
@@ -182,10 +193,17 @@ def app():
 
     st.subheader("pena definitiva",divider = "blue")
 
+ # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
+    # Calculo da pena
+    
 
 
 
 
+
+    
+
+ # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
     col5,col6,col7 = st.columns(spec=[1,1,1])
     with col5:
         pass
