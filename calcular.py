@@ -78,7 +78,7 @@ def app():
             with col112:
                 st.write(f"**Etnia:** {resultado[15]}")
             with col113:
-                st.write(f"**Acusação:** {resultado[16]}")
+                st.write(f"**Acusação Art.:** {resultado[16]}")
             with col114:
                 st.write(f"**Resumo:** {resultado[17]}")
     
@@ -178,6 +178,8 @@ def app():
     st.subheader(f"Agravantes = {agrbox}")
 
 
+   
+
 
     st.subheader("pena definitiva",divider = "blue")
 
@@ -192,7 +194,7 @@ def app():
 
         if st.button("Calcular",type ="primary",use_container_width=True):
             
-            st.success(f"Pena Final: {pena_final:.2f} anos",icon=":material/balance:")
+            st.success(f"Pena Definitiva: {pena_final:.2f} anos",icon=":material/balance:")
 
     with col7:
         pass

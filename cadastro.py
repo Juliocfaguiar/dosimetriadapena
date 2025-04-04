@@ -56,7 +56,7 @@ def app():
         with col13:
             Etinia = st.text_input("Etinia",max_chars=10)
         with col14:
-            Acuzacao = st.selectbox("Delito",options = cpenal )
+            Acuzacao = st.selectbox("Delito Art.",options = cpenal )
 
         txt = st.text_area("Resumo",max_chars=500)
 
