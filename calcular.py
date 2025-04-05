@@ -203,8 +203,13 @@ def app():
    
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
     # calculo da pena em anos
-    if st.button("Calcular", type="primary", use_container_width=True):    
-        if resultado:
+    # Verifica se o botão "Calcular" foi clicado
+    if st.button("Calcular", type="primary", use_container_width=True):
+        # Verifica se o resultado foi definido
+        if 'resultado' in st.session_state and st.session_state.resultado:
+            resultado = st.session_state.resultado
+
+            # Itera sobre o DataFrame para encontrar a linha correspondente
             for index, row in df.iterrows():
                 try:
                     # Filtra o DataFrame para encontrar a linha correspondente
@@ -212,9 +217,9 @@ def app():
 
                     if not filtered_row.empty:
                         # Obtém a primeira linha correspondente
-                        row = filtered_row.iloc[0]                   
+                        row = filtered_row.iloc[0]
                         if pd.notna(row["anoMax"]) and pd.notna(row["anoMin"]):
-                            st.write(f"pena inicial de  : {row['anoMin']} anos até {row['anoMax']} anos")
+                            st.write(f"Pena inicial de: {row['anoMin']} anos até {row['anoMax']} anos")
                             resultAno = (row["anoMax"] - row["anoMin"]) * 360
                             resultAno = resultAno * (basebox / 8)
                             resultAno = resultAno / 360
@@ -226,15 +231,16 @@ def app():
                                 final_resultAno = round((decimal_part / 100) * 12, 2)
                                 if final_resultAno == 0.6:
                                     final_resultAno = final_resultAno * 10
-                                # final_result = round(final_result , 2)
                                 calculoFinal = row["anoMin"] + int(split_resultAno[0])
                                 calculoFinal = int(calculoFinal)
                                 final_resultAno = int(final_resultAno)
-                                st.write(f"Sentenciado a Pena base de : {calculoFinal} ano(s) e {final_resultAno} mês(es)")
+                                st.write(f"Sentenciado a Pena base de: {calculoFinal} ano(s) e {final_resultAno} mês(es)")
                                 break
                 except KeyError as e:
                     st.error(f"Erro: A coluna {e} não foi encontrada no DataFrame.")
                     break
+        else:
+            st.error("Por favor, realize a busca antes de calcular a pena.")
                             # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
                             #  calculo de pena em meses
 
@@ -262,7 +268,7 @@ def app():
             #                 calculoFinal = row["mesMin"] + final_result
             #                 st.write(f"Sentenciado a : {calculoFinal} mes(es) e {final_result} dia(s)")
             #             break
-                k        
+                        
     # for index, row in df.iterrows():
     #     try:
             
