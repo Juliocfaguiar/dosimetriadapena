@@ -5,13 +5,12 @@ import sqlite3
 
 
 def app():
-    
+    if "resultado" not in st.session_state:
+        st.session_state.resultado = None
+
     df = pd.read_csv("crimes.csv",sep=";")
 
-    # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-    # Inicializa o estado da busca
-    # if "resultado" not in st.session_state:
-    #     st.session_state.resultado = None
+  
 
     col200, col201,col202 = st.columns([1,1,1])
     with col200:
@@ -49,17 +48,6 @@ def app():
     if st.session_state.resultado:
         resultado = st.session_state.resultado
         st.success("Registro encontrado:")
-       
-
-            # Comparação com a coluna "art" do CSV
-            # try:
-            #     if str(resultado[16]) in df['art'].astype(str).values:
-            #         st.success(f"O artigo {resultado[16]} foi encontrado no CSV!", icon="✅")
-            #     else:
-            #         st.error(f"O artigo {resultado[16]} não foi encontrado no CSV.", icon="❌")
-            # except Exception as e:
-            #     st.error(f"Erro ao comparar o artigo: {e}")
-
 
         col100, col101,col102,col103,col104 = st.columns(spec=[1,.50,.50,1,1])
         with col100:
