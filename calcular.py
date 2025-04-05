@@ -10,8 +10,8 @@ def app():
 
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
     # Inicializa o estado da busca
-    if "resultado" not in st.session_state:
-        st.session_state.resultado = None
+    # if "resultado" not in st.session_state:
+    #     st.session_state.resultado = None
 
     col200, col201,col202 = st.columns([1,1,1])
     with col200:
@@ -158,7 +158,7 @@ def app():
             basebox += 1
 
    
-    mewTwo = st.button("calcular",type="tertiary",use_container_width=True)
+    # 
 
     col3,col4 = st.columns(spec=[1,1])
     with col3:
@@ -193,34 +193,76 @@ def app():
             agrbox += 1
 
 
-    st.subheader(f"Pena Base ={basebox}")
-    st.subheader(f"Atenuantes = {atebox}")
-    st.subheader(f"Agravantes = {agrbox}")
+   
 
 
    # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
 
 
-    st.subheader("pena definitiva",divider = "blue")
+    
+   
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-    # calculo da pena 
-    if resultado:
-        for index, row in df.iterrows():
-            try:
-                if str(resultado[16]) in df["art"].astype(str).values:
-                    st.write(f"Artigo encontrado: {row['art']}")
-                    
-                    
-                    if pd.notna(row["anoMax"]) and pd.notna(row["anoMin"]):
-                        st.write(f"Artigo encontrado: {row['anoMax']} e {row['anoMin']}")
-                        
-                        result = (row["anoMax"] - row["anoMin"]) * 360
-                        
-                        result = result / 360
-                        st.write(f"Resultado: {result}")
-            except KeyError as e:
-                print(f"Erro: A coluna {e} não foi encontrada no DataFrame.")
-                break
+    # calculo da pena em anos
+    if st.button("Calcular", type="primary", use_container_width=True):    
+        if resultado:
+            for index, row in df.iterrows():
+                try:
+                    # Filtra o DataFrame para encontrar a linha correspondente
+                    filtered_row = df[df["art"].astype(str) == str(resultado[16])]
+
+                    if not filtered_row.empty:
+                        # Obtém a primeira linha correspondente
+                        row = filtered_row.iloc[0]                   
+                        if pd.notna(row["anoMax"]) and pd.notna(row["anoMin"]):
+                            st.write(f"pena inicial de  : {row['anoMin']} anos até {row['anoMax']} anos")
+                            resultAno = (row["anoMax"] - row["anoMin"]) * 360
+                            resultAno = resultAno * (basebox / 8)
+                            resultAno = resultAno / 360
+                            result_strAno = str(resultAno)
+                            split_resultAno = result_strAno.split(".")
+                            if len(split_resultAno) > 1 and split_resultAno[1] != 0:
+                                decimal_part = int(split_resultAno[1])
+
+                                final_resultAno = round((decimal_part / 100) * 12, 2)
+                                if final_resultAno == 0.6:
+                                    final_resultAno = final_resultAno * 10
+                                # final_result = round(final_result , 2)
+                                calculoFinal = row["anoMin"] + int(split_resultAno[0])
+                                calculoFinal = int(calculoFinal)
+                                final_resultAno = int(final_resultAno)
+                                st.write(f"Sentenciado a Pena base de : {calculoFinal} ano(s) e {final_resultAno} mês(es)")
+                                break
+                except KeyError as e:
+                    st.error(f"Erro: A coluna {e} não foi encontrada no DataFrame.")
+                    break
+                            # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
+                            #  calculo de pena em meses
+
+            #         if pd.notna(row["mesMax"]) and pd.notna(row["mesMin"]):
+            #             st.write(f"pena de : {row['mesMin']} até {row['mesMax']}")
+            #             resultMes = (row["mesMax"] - row["mesMin"]) * 30
+            #             resultMes = resultMes * (basebox / 8)
+            #             st.write(f"150 * (2/8) {resultMes}")
+            #             resultMes = round(resultMes / 360 ,2)
+            #             st.write(f"37,5/360  =  {resultMes}")
+            #             resultMes = row["mesMin"] + resultMes 
+            #             result_strMes = str(resultMes)
+            #             st.write(f"mesesesese {resultMes}")
+            #             split_result = result_strMes.split(".")
+            #             if len(split_result) > 0 and int(split_result[0]) != 0:
+            #                 st.write(f"Resultado: {split_result[0]} mes(es)")
+            #             if len(split_result) > 1 and split_result[1] != 0:
+            #                 decimal_part = int(split_result[1])
+            #                 st.write(f"Rhuehuehuehuehue {decimal_part} dias")
+            #                 final_result = round((decimal_part )/10 * 30, 1)
+                            
+                            
+            #                 final_result = int(final_result)
+            #                 st.write(f"hahahahaah{final_result} dias")
+            #                 calculoFinal = row["mesMin"] + final_result
+            #                 st.write(f"Sentenciado a : {calculoFinal} mes(es) e {final_result} dia(s)")
+            #             break
+                k        
     # for index, row in df.iterrows():
     #     try:
             
