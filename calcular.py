@@ -7,6 +7,9 @@ import sqlite3
 def app():
     if "resultado" not in st.session_state:
         st.session_state.resultado = None
+    
+    
+
 
     df = pd.read_csv("crimes.csv",sep=";")
 
@@ -109,6 +112,7 @@ def app():
     basebox = 0
     atebox = 0
     agrbox = 0
+    ategrbox = atebox + agrbox
 
     col1,col2 = st.columns(spec = [1,1])
     
@@ -146,7 +150,66 @@ def app():
             basebox += 1
 
    
-    # 
+    # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
+    # calculo da pena Base em anos
+    # Verifica se o botão "Calcular" foi clicado
+    # Verifica se o botão "Calcular Pena Base" foi clicado
+    if st.button("Calcular Pena Base", type="primary", use_container_width=True):
+        # Verifica se o resultado foi definido
+        if 'resultado' in st.session_state and st.session_state.resultado:
+            resultado = st.session_state.resultado
+
+            # Itera sobre o DataFrame para encontrar a linha correspondente
+            for index, row in df.iterrows():
+                try:
+                    # Filtra o DataFrame para encontrar a linha correspondente
+                    filtered_row = df[df["art"].astype(str) == str(resultado[16])]
+
+                    if not filtered_row.empty:
+                        # Obtém a primeira linha correspondente
+                        row = filtered_row.iloc[0]
+                        if pd.notna(row["anoMax"]) and pd.notna(row["anoMin"]):
+                            # Calcula a pena inicial
+                            st.session_state.pena_inicial = f"Pena inicial de: {row['anoMin']} anos até {row['anoMax']} anos"
+                            # st.write(st.session_state.pena_inicial)
+
+                            # Calcula a pena base
+                            resultAno = (row["anoMax"] - row["anoMin"]) * 360
+                            resultAno = resultAno * (basebox / 8)
+                            resultAno = resultAno / 360
+                            result_strAno = str(resultAno)
+                            split_resultAno = result_strAno.split(".")
+                            if len(split_resultAno) > 1 and split_resultAno[1] != 0:
+                                decimal_part = int(split_resultAno[1])
+
+                                final_resultAno = round((decimal_part / 100) * 12, 2)
+                                if final_resultAno == 0.6:
+                                    final_resultAno = final_resultAno * 10
+                                calculoFinalBase = row["anoMin"] + int(split_resultAno[0])
+                                calculoFinalBase = int(calculoFinalBase)
+                                final_resultAno = int(final_resultAno)
+
+                                # Salva os valores no st.session_state
+                                st.session_state.calculoFinalBase = calculoFinalBase
+                                st.session_state.final_resultAno = final_resultAno
+
+                                # Salva a mensagem da pena base no session_state
+                                st.session_state.pena_base = f"Sentenciado a Pena base de: {calculoFinalBase} ano(s) e {final_resultAno} mês(es)"
+                                # st.write(st.session_state.pena_base)
+                                break
+                except KeyError as e:
+                    st.error(f"Erro: A coluna {e} não foi encontrada no DataFrame.")
+                    break
+        else:
+            st.error("Por favor, realize a busca antes de calcular a pena.")
+
+    # Exibe as mensagens salvas no session_state, se existirem
+    # if "pena_inicial" in st.session_state:
+    st.write(st.session_state.pena_inicial)
+
+    # if "pena_base" in st.session_state:
+    st.write(st.session_state.pena_base)
+        # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
 
     col3,col4 = st.columns(spec=[1,1])
     with col3:
@@ -169,7 +232,7 @@ def app():
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
         st.subheader("Causas Agravantes",divider = "red")
         
-       
+    
         concurso_de_pessoas = st.checkbox("Concurso de Pessoas", key="concurso_de_pessoas")
         if concurso_de_pessoas:
             agrbox += 1
@@ -181,54 +244,33 @@ def app():
             agrbox += 1
 
 
-   
+# §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
+    # calculo da pena Provisória em anos
+    
+    if "calculoFinalBase" in st.session_state and "final_resultAno" in st.session_state:
+        if st.session_state.calculoFinalBase is not None and st.session_state.final_resultAno is not None:
+            # Realiza os cálculos apenas se os valores não forem None
+            diasAno = st.session_state.calculoFinalBase * 360
+            diasMes = st.session_state.final_resultAno * 30
+            totalDias = diasAno + diasMes
+            st.write(f"Pena Provisória: {diasAno} dias e {diasMes} dias")
+            st.write(f"Total de dias: {totalDias}")
 
-
-   # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-
+            # Exemplo de cálculo adicional
+            if ategrbox > 0:  # Certifique-se de que ategrbox não seja zero para evitar divisão por zero
+                Provisorio = totalDias / (ategrbox / 6)
+                st.write(f"Resultado: {Provisorio}")
+            else:
+                st.error("Erro: O valor de 'ategrbox' é inválido (zero ou não definido).")
+        else:
+            st.error("Erro: Os valores de 'calculoFinalBase' ou 'final_resultAno' não foram definidos.")
+    else:
+        st.error("Erro: Os valores de 'calculoFinalBase' ou 'final_resultAno' não estão disponíveis no session_state.")
 
     
-   
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-    # calculo da pena em anos
-    # Verifica se o botão "Calcular" foi clicado
-    if st.button("Calcular", type="primary", use_container_width=True):
-        # Verifica se o resultado foi definido
-        if 'resultado' in st.session_state and st.session_state.resultado:
-            resultado = st.session_state.resultado
+    
 
-            # Itera sobre o DataFrame para encontrar a linha correspondente
-            for index, row in df.iterrows():
-                try:
-                    # Filtra o DataFrame para encontrar a linha correspondente
-                    filtered_row = df[df["art"].astype(str) == str(resultado[16])]
-
-                    if not filtered_row.empty:
-                        # Obtém a primeira linha correspondente
-                        row = filtered_row.iloc[0]
-                        if pd.notna(row["anoMax"]) and pd.notna(row["anoMin"]):
-                            st.write(f"Pena inicial de: {row['anoMin']} anos até {row['anoMax']} anos")
-                            resultAno = (row["anoMax"] - row["anoMin"]) * 360
-                            resultAno = resultAno * (basebox / 8)
-                            resultAno = resultAno / 360
-                            result_strAno = str(resultAno)
-                            split_resultAno = result_strAno.split(".")
-                            if len(split_resultAno) > 1 and split_resultAno[1] != 0:
-                                decimal_part = int(split_resultAno[1])
-
-                                final_resultAno = round((decimal_part / 100) * 12, 2)
-                                if final_resultAno == 0.6:
-                                    final_resultAno = final_resultAno * 10
-                                calculoFinal = row["anoMin"] + int(split_resultAno[0])
-                                calculoFinal = int(calculoFinal)
-                                final_resultAno = int(final_resultAno)
-                                st.write(f"Sentenciado a Pena base de: {calculoFinal} ano(s) e {final_resultAno} mês(es)")
-                                break
-                except KeyError as e:
-                    st.error(f"Erro: A coluna {e} não foi encontrada no DataFrame.")
-                    break
-        else:
-            st.error("Por favor, realize a busca antes de calcular a pena.")
                             # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
                             #  calculo de pena em meses
 
