@@ -177,6 +177,8 @@ def app():
                             resultAno = resultAno / 360
                             result_strAno = str(resultAno)
                             split_resultAno = result_strAno.split(".")
+
+                            # st.write(f"separar {split_resultAno}")
                             if len(split_resultAno) > 1 and split_resultAno[1] != 0:
                                 decimal_part = int(split_resultAno[1])
 
@@ -256,26 +258,43 @@ def app():
 
         if st.button("Calcular Pena Provisória", type="primary", use_container_width=True):
         # Exemplo de cálculo adicional
-            if provbox > 0:  # Certifique-se de que ategrbox não seja zero para evitar divisão por zero
+            if provbox > 0:  # Certifique-se de que provbox não seja zero para evitar divisão por zero
                 Provisorio = totalDias * (provbox / 6)
                 
                 st.write(f"Resultado: {Provisorio}")
 
                 Provisorio = Provisorio / 360
+                Provisorio = round(Provisorio, 2)
+                Provisorio = str(Provisorio)
                 st.write(f"Provisório/360: {Provisorio}")
+                splitProv_resultAno = Provisorio.split(".")
+                st.write(f"Provisório separado: {splitProv_resultAno[1]}")
+                splitProv_resultAno = int(splitProv_resultAno[1])
+                splitProv_resultAno = round(splitProv_resultAno /100 *12, 2)
+                st.write(f"Provisório : {splitProv_resultAno} mes(es)")
+                # splitProv_resultAno = round(splitProv_resultAno,2)
+                # st.write(f"Provisório arredondado: {splitProv_resultAno}")
 
-                splitProv_resultAno = result_strAno.split(".")
-                if len(splitProv_resultAno) > 1 and splitProv_resultAno[1] != 0:
-                    decimalProv_part = int(splitProv_resultAno[1])
+                # st.write(f"separar {splitProv_resultAno}")  
 
-                    finalProv_resultAno = round((decimal_part / 100) * 12, 2)
-                    if finalProv_resultAno == 0.6:
-                        finalProv_resultAno = finalProv_resultAno * 10
-                    calculoFinalProv = row["anoMin"] + int(splitProv_resultAno[0])
-                    calculoFinalProv = int(calculoFinalProv)
-                    finalProv_resultAno = int(finalProv_resultAno)
+                # # st.write(f"separar {split_resultAno}")
+                # if len(splitProv_resultAno) > 1 and splitProv_resultAno[1] != 0:
+                #     decimalProv_part = float(splitProv_resultAno[1])
+                #     # decimalProv_part = round((decimalProv_part / 10000000000000000), 2)
+                #     # decimalProv_part = round(decimalProv_part,2)
+                #     st.write(f"decimalProv_part arredondado: {decimalProv_part}")
+                #     # finalProv_resultAno = round(decimalProv_part * 12 , 2)
+                #     splitProv_resultAno2 = finalProv_resultAno.split(".")
+                #     st.write(f"finalProv_resultAno * 12: {splitProv_resultAno2[1]}")
+                #     if finalProv_resultAno ==  109999999999999992:
+                #         finalProv_resultAno = 11
 
-    
+
+                    # st.write(f"Resultado Final em: {finalProv_resultAno} mes(es)")
+                    # calculoFinalBaseProv = row["anoMin"] + int(splitProv_resultAno[0])
+                    # calculoFinalBaseProv = int(calculoFinalBaseProv)
+                    # finalProv_resultAno = int(finalProv_resultAno)
+
 
     
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
