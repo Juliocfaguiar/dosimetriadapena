@@ -110,9 +110,7 @@ def app():
         pass
 
     basebox = 0
-    atebox = 0
-    agrbox = 0
-    ategrbox = atebox + agrbox
+    provbox = 0
 
     col1,col2 = st.columns(spec = [1,1])
     
@@ -220,13 +218,13 @@ def app():
 
         menoridade = st.checkbox("Menoridade", key="menoridade")
         if menoridade:
-            atebox += 1
+            provbox += 1
         confissao = st.checkbox("Confissão", key="confissao")
         if confissao:
-            atebox += 1
+            provbox += 1
         desconhecimento_da_lei = st.checkbox("Desconhecimento da Lei", key="desconhecimento_da_lei")
         if desconhecimento_da_lei:
-            atebox += 1
+            provbox += 1
 
     with col4:
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
@@ -235,13 +233,13 @@ def app():
     
         concurso_de_pessoas = st.checkbox("Concurso de Pessoas", key="concurso_de_pessoas")
         if concurso_de_pessoas:
-            agrbox += 1
+            provbox += 1
         reincidencia = st.checkbox("Reincidência", key="reincidencia")
         if reincidencia:
-            agrbox += 1
+            provbox += 1
         motivo_futil = st.checkbox("Motivo Fútil", key="motivo_futil")
         if motivo_futil:
-            agrbox += 1
+            provbox += 1
 
 
 # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
@@ -256,16 +254,28 @@ def app():
             st.write(f"Pena Provisória: {diasAno} dias e {diasMes} dias")
             st.write(f"Total de dias: {totalDias}")
 
-            # Exemplo de cálculo adicional
-            if ategrbox > 0:  # Certifique-se de que ategrbox não seja zero para evitar divisão por zero
-                Provisorio = totalDias / (ategrbox / 6)
+        if st.button("Calcular Pena Provisória", type="primary", use_container_width=True):
+        # Exemplo de cálculo adicional
+            if provbox > 0:  # Certifique-se de que ategrbox não seja zero para evitar divisão por zero
+                Provisorio = totalDias * (provbox / 6)
+                
                 st.write(f"Resultado: {Provisorio}")
-            else:
-                st.error("Erro: O valor de 'ategrbox' é inválido (zero ou não definido).")
-        else:
-            st.error("Erro: Os valores de 'calculoFinalBase' ou 'final_resultAno' não foram definidos.")
-    else:
-        st.error("Erro: Os valores de 'calculoFinalBase' ou 'final_resultAno' não estão disponíveis no session_state.")
+
+                Provisorio = Provisorio / 360
+                st.write(f"Provisório/360: {Provisorio}")
+
+                splitProv_resultAno = result_strAno.split(".")
+                if len(splitProv_resultAno) > 1 and splitProv_resultAno[1] != 0:
+                    decimalProv_part = int(splitProv_resultAno[1])
+
+                    finalProv_resultAno = round((decimal_part / 100) * 12, 2)
+                    if finalProv_resultAno == 0.6:
+                        finalProv_resultAno = finalProv_resultAno * 10
+                    calculoFinalProv = row["anoMin"] + int(splitProv_resultAno[0])
+                    calculoFinalProv = int(calculoFinalProv)
+                    finalProv_resultAno = int(finalProv_resultAno)
+
+    
 
     
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
