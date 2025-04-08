@@ -273,45 +273,46 @@ def app():
                     
 # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
 
-    # provbox = 0
+    Minbox = 0
+    Majbox = 0
 
-    # col1,col2 = st.columns(spec = [1,1])
+    
     
     # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
 
-    # with col1 :
+    col5,col6 = st.columns(spec=[1,1])
+    with col5:
+        # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #       
+            
+        st.subheader("Minorantes (Redução)",divider = "green")
 
-    #     culpabilidade = st.checkbox("Culpabilidade", key="culpabilidade")
-    #     if culpabilidade:
-    #         basebox += 1
-    #     antecedentes = st.checkbox("Antecedentes", key="antecedentes")
-    #     if antecedentes:
-    #         basebox += 1
-    #     conduta_social = st.checkbox("Conduta Social", key="conduta_social")
-    #     if conduta_social:
-    #         basebox += 1
-    #     personalidade = st.checkbox("Personalidade do Agente", key="personalidade")
-    #     if personalidade:
-    #         basebox += 1
+        primeiroMin = st.checkbox("-1/3", key="primeiroMin")
+        if primeiroMin:
+            Minbox -= 1/3
         
-
-    # with col2:
-
-    #     motivos = st.checkbox("Motivos", key="motivos")
-    #     if motivos:
-    #         basebox += 1
-    #     circunstancias = st.checkbox("Circunstâncias do Crime", key="circunstancias")
-    #     if circunstancias:
-    #         basebox += 1
-    #     consequencias = st.checkbox("Consequências do Crime", key="consequencias")
-    #     if consequencias:
-    #         basebox += 1
-    #     comportamento_vitima = st.checkbox("Comportamento da Vítima", key="comportamento_vitima")
-    #     if comportamento_vitima:
-    #         basebox += 1
-    # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #        
-    # calculo da pena Definitiva em anos
-
+        segundoMin = st.checkbox("-2/3", key="segundoMin")
+        if segundoMin:
+            Minbox -= 2/3
+        terceiroMin = st.checkbox("-1/2", key="terceiroMin")
+        if terceiroMin:
+            Minbox -= 1/2
+        st.write(f"MinBox : {Minbox}")
+    with col6:
+    # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
+        st.subheader("Majorantes (Aumento)",divider = "red")
+        
+    
+        primeiroMaj = st.checkbox("+1/3 ", key="primeiroMaj")
+        if primeiroMaj:
+            Majbox += 1/3
+       
+        segundoMaj = st.checkbox("+2/3", key="segundoMaj")
+        if segundoMaj:
+            Majbox += 2/3
+        terceiroMaj = st.checkbox("+1/2", key="terceiroMaj")
+        if terceiroMaj:
+            Majbox += 1/2
+    st.write(f"Majbox : {Majbox}")
 
 
 
