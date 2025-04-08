@@ -150,8 +150,6 @@ def app():
    
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
     # calculo da pena Base em anos
-    # Verifica se o botão "Calcular" foi clicado
-    # Verifica se o botão "Calcular Pena Base" foi clicado
     if st.button("Calcular Pena Base", type="primary", use_container_width=True):
         # Verifica se o resultado foi definido
         if 'resultado' in st.session_state and st.session_state.resultado:
@@ -202,6 +200,7 @@ def app():
                     break
         else:
             st.error("Por favor, realize a busca antes de calcular a pena.")
+    
 
     # Exibe as mensagens salvas no session_state, se existirem
     # if "pena_inicial" in st.session_state:
@@ -209,12 +208,10 @@ def app():
 
     # if "pena_base" in st.session_state:
     st.write(st.session_state.pena_base)
-        # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-
+        
     col3,col4 = st.columns(spec=[1,1])
     with col3:
-        # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-        
+        # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #       
             
         st.subheader("Causas Atenuantes",divider = "green")
 
@@ -253,47 +250,74 @@ def app():
             diasAno = st.session_state.calculoFinalBase * 360
             diasMes = st.session_state.final_resultAno * 30
             totalDias = diasAno + diasMes
-            st.write(f"Pena Provisória: {diasAno} dias e {diasMes} dias")
-            st.write(f"Total de dias: {totalDias}")
-
+              #################################
+            
         if st.button("Calcular Pena Provisória", type="primary", use_container_width=True):
         # Exemplo de cálculo adicional
             if provbox > 0:  # Certifique-se de que provbox não seja zero para evitar divisão por zero
-                Provisorio = totalDias * (provbox / 6)
-                
-                st.write(f"Resultado: {Provisorio}")
+                totalDias_provBox = totalDias * (provbox / 6)                
+                Provisorio = totalDias_provBox / 360                 
+                Provisorio = Provisorio * 12                              
+                Provisorio = int(Provisorio)                     
+                ProvisorioTotal = totalDias + (Provisorio * 30)                
+                ProvisorioTotal = ProvisorioTotal / 360                
+                ProvisorioTotal = str(ProvisorioTotal)
+                splitProv_resultAno = ProvisorioTotal.split(".")
+                if len(splitProv_resultAno) > 1 and splitProv_resultAno[1] != 0:
+                    decimalProv_part = int(splitProv_resultAno[1])                    
+                    finalProv_resultAno = (decimalProv_part * 12)
+                    finalProv_resultAno = round(finalProv_resultAno / 1000000000000000, 2)
+                    finalProv_resultAno = int(finalProv_resultAno)
+                    st.write(f"Pena Provisória é de  : {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)")
+                    st.session_state.provisorio = f"Pena Provisória é de  : {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)"
+                    
+# §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
 
-                Provisorio = Provisorio / 360
-                Provisorio = round(Provisorio, 2)
-                Provisorio = str(Provisorio)
-                st.write(f"Provisório/360: {Provisorio}")
-                splitProv_resultAno = Provisorio.split(".")
-                st.write(f"Provisório separado: {splitProv_resultAno[1]}")
-                splitProv_resultAno = int(splitProv_resultAno[1])
-                splitProv_resultAno = round(splitProv_resultAno /100 *12, 2)
-                st.write(f"Provisório : {splitProv_resultAno} mes(es)")
-                # splitProv_resultAno = round(splitProv_resultAno,2)
-                # st.write(f"Provisório arredondado: {splitProv_resultAno}")
+    # provbox = 0
 
-                # st.write(f"separar {splitProv_resultAno}")  
+    # col1,col2 = st.columns(spec = [1,1])
+    
+    # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
 
-                # # st.write(f"separar {split_resultAno}")
-                # if len(splitProv_resultAno) > 1 and splitProv_resultAno[1] != 0:
-                #     decimalProv_part = float(splitProv_resultAno[1])
-                #     # decimalProv_part = round((decimalProv_part / 10000000000000000), 2)
-                #     # decimalProv_part = round(decimalProv_part,2)
-                #     st.write(f"decimalProv_part arredondado: {decimalProv_part}")
-                #     # finalProv_resultAno = round(decimalProv_part * 12 , 2)
-                #     splitProv_resultAno2 = finalProv_resultAno.split(".")
-                #     st.write(f"finalProv_resultAno * 12: {splitProv_resultAno2[1]}")
-                #     if finalProv_resultAno ==  109999999999999992:
-                #         finalProv_resultAno = 11
+    # with col1 :
+
+    #     culpabilidade = st.checkbox("Culpabilidade", key="culpabilidade")
+    #     if culpabilidade:
+    #         basebox += 1
+    #     antecedentes = st.checkbox("Antecedentes", key="antecedentes")
+    #     if antecedentes:
+    #         basebox += 1
+    #     conduta_social = st.checkbox("Conduta Social", key="conduta_social")
+    #     if conduta_social:
+    #         basebox += 1
+    #     personalidade = st.checkbox("Personalidade do Agente", key="personalidade")
+    #     if personalidade:
+    #         basebox += 1
+        
+
+    # with col2:
+
+    #     motivos = st.checkbox("Motivos", key="motivos")
+    #     if motivos:
+    #         basebox += 1
+    #     circunstancias = st.checkbox("Circunstâncias do Crime", key="circunstancias")
+    #     if circunstancias:
+    #         basebox += 1
+    #     consequencias = st.checkbox("Consequências do Crime", key="consequencias")
+    #     if consequencias:
+    #         basebox += 1
+    #     comportamento_vitima = st.checkbox("Comportamento da Vítima", key="comportamento_vitima")
+    #     if comportamento_vitima:
+    #         basebox += 1
+    # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #        
+    # calculo da pena Definitiva em anos
 
 
-                    # st.write(f"Resultado Final em: {finalProv_resultAno} mes(es)")
-                    # calculoFinalBaseProv = row["anoMin"] + int(splitProv_resultAno[0])
-                    # calculoFinalBaseProv = int(calculoFinalBaseProv)
-                    # finalProv_resultAno = int(finalProv_resultAno)
+
+
+
+
+
 
 
     
