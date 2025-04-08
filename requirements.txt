@@ -2,3 +2,4 @@ streamlit==1.42.0
 streamlit-option-menu==0.4.0
 pandas==2.2.3
 numpy==2.2.4
+reportlab==3.6.12
