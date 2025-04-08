@@ -154,7 +154,6 @@ def app():
         # Verifica se o resultado foi definido
         if 'resultado' in st.session_state and st.session_state.resultado:
             resultado = st.session_state.resultado
-
             # Itera sobre o DataFrame para encontrar a linha correspondente
             for index, row in df.iterrows():
                 try:
@@ -251,7 +250,7 @@ def app():
             diasMes = st.session_state.final_resultAno * 30
             totalDias = diasAno + diasMes
               #################################
-            
+        provAno = 0    
         if st.button("Calcular Pena Provisória", type="primary", use_container_width=True):
         # Exemplo de cálculo adicional
             if provbox > 0:  # Certifique-se de que provbox não seja zero para evitar divisão por zero
@@ -268,15 +267,21 @@ def app():
                     finalProv_resultAno = (decimalProv_part * 12)
                     finalProv_resultAno = round(finalProv_resultAno / 1000000000000000, 2)
                     finalProv_resultAno = int(finalProv_resultAno)
+                    provAno = int(splitProv_resultAno[0])
+                    st.session_state.provAno = provAno
+                    st.session_state.finalProv_resultAno = finalProv_resultAno
                     st.write(f"Pena Provisória é de  : {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)")
                     st.session_state.provisorio = f"Pena Provisória é de  : {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)"
                     
 # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
+    # Verifica se provAno foi definido no session_state
+    if "provAno" in st.session_state:
+        provAno = st.session_state.provAno
+
+    # Pena Definitiva em Anos
 
     Minbox = 0
-    Majbox = 0
-
-    
+    Majbox = 0  
     
     # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
 
@@ -286,36 +291,97 @@ def app():
             
         st.subheader("Minorantes (Redução)",divider = "green")
 
-        primeiroMin = st.checkbox("-1/3", key="primeiroMin")
+        primeiroMin = st.checkbox("1/6", key="primeiroMin")
         if primeiroMin:
-            Minbox -= 1/3
-        
-        segundoMin = st.checkbox("-2/3", key="segundoMin")
+            Minbox += 1/6
+
+        segundoMin = st.checkbox("1/3", key="segundoMin")
         if segundoMin:
-            Minbox -= 2/3
-        terceiroMin = st.checkbox("-1/2", key="terceiroMin")
+            Minbox += 1/3
+
+        terceiroMin = st.checkbox("1/2", key="terceiroMin")
         if terceiroMin:
-            Minbox -= 1/2
-        st.write(f"MinBox : {Minbox}")
+            Minbox += 1/2
+        
+        quartoMin = st.checkbox("2/3", key="quartoMin")
+        if quartoMin:
+            Minbox += 2/3
+        quintoMin = st.checkbox("1", key="quintoMin")
+        if quintoMin:
+            Minbox += 1/2
+        
     with col6:
     # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
         st.subheader("Majorantes (Aumento)",divider = "red")
         
     
-        primeiroMaj = st.checkbox("+1/3 ", key="primeiroMaj")
+        primeiroMaj = st.checkbox("1/6", key="primeiroMaj")
         if primeiroMaj:
-            Majbox += 1/3
-       
-        segundoMaj = st.checkbox("+2/3", key="segundoMaj")
+            Majbox += 1/6
+
+        segundoMaj = st.checkbox("1/3", key="segundoMaj")
         if segundoMaj:
-            Majbox += 2/3
-        terceiroMaj = st.checkbox("+1/2", key="terceiroMaj")
+            Majbox += 1/3
+
+        terceiroMaj = st.checkbox("1/2", key="terceiroMaj")
         if terceiroMaj:
             Majbox += 1/2
-    st.write(f"Majbox : {Majbox}")
+        
+        quartoMaj = st.checkbox("2/3", key="quartoMaj")
+        if quartoMaj:
+            Majbox += 2/3
+        quintoMaj = st.checkbox("1", key="quintoMaj")
+        if quintoMaj:
+            Majbox += 1/2
+        
+    
+    
+    # Calcula a pena definitiva
+    defAnos = provAno * 360
+    
+    defMeses = int(st.session_state.finalProv_resultAno) * 30
+    totalDef_Dias = defAnos + defMeses
+    
+    if st.button("Calcular Pena Definitiva", type="primary", use_container_width=True):
+       
+    
+        if Minbox != 0:
+            totalMinbox = totalDef_Dias * (Minbox)
+            totalDef = totalDef_Dias - totalMinbox 
+            totalDef_Anos = totalDef / 360
+            totalDef_Anos = str(totalDef_Anos)
+            totalDef_split = totalDef_Anos.split(".")
+            if len(totalDef_split) > 1 and totalDef_split[1] != 0:
+                decimalDef_part = int(totalDef_split[1])
+                finalDef_result = round(decimalDef_part / 1000000000000000, 2)
+                finalDef_result = int(finalDef_result)
+                totalDef_Anos = int(totalDef_split[0])
+                st.write(f"Definitiva Anos : {totalDef_Anos} e {finalDef_result} meses")
+            else:
+                st.write("A parte decimal é zero, não é possível realizar o cálculo.")
+        if Majbox != 0:
+            totalMajbox = totalDef_Dias * (Majbox)
+            totalDef = totalDef_Dias + totalMajbox
+            totalDef_Anos = totalDef / 360
+            totalDef_Anos = str(totalDef_Anos)
+            totalDef_split = totalDef_Anos.split(".")
+            if len(totalDef_split) > 1 and totalDef_split[1] != 0:
+                decimalDef_part = int(totalDef_split[1])
+                finalDef_result = round(decimalDef_part / 1000000000000000, 2)
+                finalDef_result = int(finalDef_result)
+                totalDef_Anos = int(totalDef_split[0])
+                st.write(f"Definitiva Anos : {totalDef_Anos} e {finalDef_result} meses")
+            else:
+                st.write("A parte decimal é zero, não é possível realizar o cálculo.")
+    
+    
+    
+   
+    
+    
 
-
-
+    
+    # totalDias_MinMaj = 
 
 
 
