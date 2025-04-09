@@ -32,8 +32,9 @@ def gerar_pdf(resultado, pena_provisoria, pena_definitiva):
                 Vistos etc.
                 
                 O Ministério Público ofereceu denúncia contra {resultado[3]}, {resultado[4]}, {resultado[5]}, nascido em {resultado[6]},
-                profissão: {resultado[7]}, portador do CPF {resultado[8]}, residente à {resultado[9]}, {resultado[10]}, {resultado[11]}, {resultado[12]}, {resultado[13]},
-                pela prática do crime previsto no artigo {resultado[16]} do Código Penal, conforme os fatos narrados na denúncia.
+                profissão: {resultado[7]}, portador do CPF {resultado[8]}, residente à {resultado[9]}, {resultado[10]}, {resultado[11]}
+                {resultado[12]}, {resultado[13]}, pela prática do crime previsto no artigo {resultado[16]} do Código Penal conforme os
+                fatos narrados na denúncia.
                 
                 Recebida a denúncia e realizada a instrução processual, entendo que restou comprovada a materialidade e autoria do delito,
                 não havendo causas excludentes da ilicitude ou culpabilidade.
@@ -43,9 +44,9 @@ def gerar_pdf(resultado, pena_provisoria, pena_definitiva):
                 Pena provisória fixada em: {pena_provisoria}
                 Pena definitiva fixada em: {pena_definitiva}
                 
-                Ante o exposto, JULGO PROCEDENTE a pretensão punitiva estatal para CONDENAR o réu {resultado[3]}, como incurso nas
-                sanções do art. {resultado[16]} do Código Penal, à pena de {pena_definitiva}, a ser cumprida em regime inicialmente adequado,
-                nos termos do art. 33 do Código Penal.
+                Ante o exposto, JULGO PROCEDENTE a pretensão punitiva estatal para CONDENAR 
+                o réu {resultado[3]}, como incurso nas sanções do art. {resultado[16]} do Código Penal, à pena de {pena_definitiva}
+                a ser cumprida em regime inicialmente adequado, nos termos do art. 33 do Código Penal.
                 
                 Publique-se. Registre-se. Intime-se.
                 
