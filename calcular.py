@@ -351,7 +351,45 @@ def app():
                 st.write(f"Definitiva Anos: {totalDef_Anos} e {finalDef_result} meses")
             else:
                 st.write("A parte decimal é zero, não é possível realizar o cálculo.")
+# Detração (oponal)
 
+    # Detração
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        anos_detraidos = st.number_input("Anos detraídos", min_value=0, step=1, value=0)
+    with col2:
+        meses_detraidos = st.number_input("Meses detraídos", min_value=0, max_value=11, step=1, value=0)
+    with col3:
+        dias_detraidos = st.number_input("Dias detraídos", min_value=0, max_value=29, step=1, value=0)
+
+    if st.button("Aplicar Detração", type="secondary", use_container_width=True):
+        dias_totais_definitiva = (
+            st.session_state.definitiva_ano * 360 +
+            st.session_state.definitiva_mes * 30 +
+            st.session_state.definitiva_dias
+        )
+        dias_detraidos_total = (
+            anos_detraidos * 360 + meses_detraidos * 30 + dias_detraidos
+        )
+
+        dias_resultado = dias_totais_definitiva - dias_detraidos_total
+        if dias_resultado < 0:
+            dias_resultado = 0
+
+        anos_finais = dias_resultado // 360
+        meses_finais = (dias_resultado % 360) // 30
+        dias_finais = (dias_resultado % 360) % 30
+
+        st.session_state.pena_final_com_detração = (
+            f"Pena final com detração: {anos_finais} ano(s), "
+            f"{meses_finais} mês(es) e {dias_finais} dia(s)"
+        )
+
+        st.success(f"✅ {st.session_state.pena_final_com_detração}")
+
+
+
+    
     # Botão para gerar PDF
     if st.button("Gerar PDF", type="primary", use_container_width=True):
         if "resultado" in st.session_state and st.session_state.resultado:
