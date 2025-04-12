@@ -44,8 +44,9 @@ def app():
         st.title("Dosimetria da Pena")
 
     # Input para buscar ID
-    col900, col901, col902 = st.columns([.50, 1, .50])
+    col900, col901, col902 = st.columns([1, .50, 1])
     with col901:
+        
         idRandom = st.text_input("Informe ID", max_chars=4)
         if st.button("Buscar", type="primary", use_container_width=True):
             try:
@@ -56,7 +57,8 @@ def app():
                 conn.close()
             except sqlite3.Error as e:
                 st.error(f"Erro ao acessar o banco de dados: {e}")
-
+    col903, col904, col905 = st.columns([.25, 1, .25])
+    with col904:
         # Exibir resultado da busca
         squirtle = st.container(border=True)
         with squirtle:
@@ -97,6 +99,8 @@ def app():
                 with col114:
                     st.write(f"**Resumo:** {resultado[17]}")
 
+    col906, col907, col908 = st.columns([.50, 1, .50])
+    with col907:
         # Fixação da Pena-Base
         col001, col002, col003 = st.columns(spec=[.70, 1, .25])
         with col002:
