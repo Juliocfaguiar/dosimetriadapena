@@ -27,7 +27,7 @@ def app():
         with col3:
             EstadoC = st.selectbox("Estado Civil",civil)
         with col4:
-            dataNasc = st.date_input("Data de Nascimento",format= "DD/MM/YYYY")
+            dataNasc = st.date_input("Data de Nascimento",format= "DD/MM/YYYY",    min_value = datetime(1900, 1, 1), max_value = datetime.today())
         with col5:
             Profissao = st.text_input("Profissão",max_chars=30)
 
