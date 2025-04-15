@@ -1,7 +1,7 @@
 
 import streamlit as st
 from streamlit_option_menu import option_menu
-import home, calcular, cadastro
+import home, calcular, cadastro,dashboard
 
 
 st.set_page_config(
@@ -27,7 +27,7 @@ class Multiapp:
                           ['Home',
                            'Calcular',
                            'Cadastro de Delito',
-                        #    'Dashboard',
+                           'Dashboard',
                           ],
                           
             icons=['house-fill','database','person-circle','pc-display-horizontal','display','display',], 
@@ -40,6 +40,6 @@ class Multiapp:
             calcular.app()  
         if app == "Cadastro de Delito":
             cadastro.app()    
-        # if app == "Dashboard":
-        #     dashboard.app()
+        if app == "Dashboard":
+            dashboard.app()
     run()

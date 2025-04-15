@@ -33,7 +33,7 @@ def app():
 
 
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-        col6,col7,col8,col9 = st.columns(spec = [.50,.50,.05,.25])
+        col6,col7,col8,col9 = st.columns(spec = [.25,.25,.05,.25])
         with col6:
             CPF = st.text_input("CPF",max_chars = 11)
         with col7:
@@ -41,20 +41,20 @@ def app():
         with col8:
             Numero = st.text_input("Número",max_chars=4)
         with col9:
-            Comp = st.text_input("Complemento",max_chars=15)
-
+            Bairro = st.text_input("Bairro",max_chars=20)
+        
 
     # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-        col10,col11,col12,col13,col14 = st.columns(spec=[1,1,.20,1,1])
+        col10,col11,col12,col13,col14 = st.columns(spec=[.50,.50,.10,.25,.25])
 
         with col10:
-            Bairro = st.text_input("Bairro",max_chars=20)
+            Cidade = st.text_input("Cidade",max_chars=20)
         with col11:
             Estado = st.text_input("Estado",max_chars=20)
         with col12:
             Genero = st.text_input ("gênero",max_chars=1)
         with col13:
-            Etinia = st.text_input("Etinia",max_chars=10)
+            Etnia = st.text_input("Etnia",max_chars=10)
         with col14:
             Acuzacao = st.selectbox("Delito Art.",options = cpenal )
 
@@ -93,8 +93,8 @@ def app():
                 CPF INT NOT NULL,
                 Endereco TEXT NOT NULL,
                 Numero INT NOT NULL,
-                Comp TEXT NOT NULL,
                 Bairro TEXT NOT NULL,
+                Cidade TEXT NOT NULL,
                 Estado TEXT NOT NULL,
                 Genero TEXT NOT NULL,
                 Etnia TEXT NOT NULL,
@@ -109,7 +109,7 @@ def app():
                         id, Data, Hora, NomeCompleto, Nacionalidade, EstadoC, DataNasc, Profissao, CPF, Endereco, Numero, Comp, Bairro, Estado, Genero, Etnia, Acuzacao, txt
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ''', (
-                    id_aleatorio, data_atual, hora_atual, NomeCompleto, Nacionalidade, EstadoC, dataNasc, Profissao, CPF, Endereco, Numero, Comp, Bairro, Estado, Genero, Etinia, Acuzacao, txt
+                    id_aleatorio, data_atual, hora_atual, NomeCompleto, Nacionalidade, EstadoC, dataNasc, Profissao, CPF, Endereco, Numero, Bairro,Cidade, Estado, Genero, Etnia, Acuzacao, txt
                 ))
                 # Obtém o ID da última linha inserida
                 
@@ -124,15 +124,21 @@ def app():
 
 
                 st.write(NomeCompleto)
-                st.write(CPF)
-                st.write(dataNasc)
                 st.write(Nacionalidade)
+                st.write(EstadoC)
+                st.write(dataNasc)
+                st.write(Profissao)
+                st.write(CPF)
                 st.write(Endereco)
                 st.write(Numero)
-                st.write(Comp)
+                st.write(Bairro)
+                st.write(Cidade)
+                st.write(Estado)
+                st.write(Genero)
+                st.write(Etnia)
                 st.write(Acuzacao)
                 st.write(txt)
-                st.write(Genero)
+                
         with col333:
             pass
                 

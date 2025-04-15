@@ -47,7 +47,7 @@ def app():
     col900, col901, col902 = st.columns([1, .50, 1])
     with col901:
         
-        idRandom = st.text_input("Informe ID", max_chars=4)
+        idRandom = st.text_input("Informe ID", max_chars=5)
         if st.button("Buscar", type="primary", use_container_width=True):
             try:
                 conn = sqlite3.connect("cadastro.db")
@@ -84,9 +84,9 @@ def app():
                 with col107:
                     st.write(f"**Número:** {resultado[10]}")
                 with col108:
-                    st.write(f"**Complemento:** {resultado[11]}")
+                    st.write(f"**Bairro:** {resultado[11]}")
                 with col109:
-                    st.write(f"**Bairro:** {resultado[12]}")
+                    st.write(f"**Cidade** {resultado[12]}")
                 with col110:
                     st.write(f"**Estado:** {resultado[13]}")
                 col111, col112, col113, col114 = st.columns(spec=[.25, .50, .50, 1])
@@ -274,7 +274,7 @@ def app():
 
         if provAno > 0:
             defAnos = provAno * 360
-            defMeses = int(st.session_state.finalProv_resultAno) * 30
+            defMeses = float(st.session_state.finalProv_resultAno) * 30
             totalDef_Dias = defAnos + defMeses
             if st.button("Calcular Pena Definitiva", type="primary", use_container_width=True):
                 if Minbox != 0:
@@ -317,9 +317,9 @@ def app():
 
         if st.button("Aplicar Detração", type="secondary", use_container_width=True):
             dias_totais_definitiva = (
-                st.session_state.definitiva_ano * 360 +
-                st.session_state.definitiva_mes * 30 +
-                st.session_state.definitiva_dias
+                st.session_state.definitiva_ano * 360 ,
+                st.session_state.definitiva_mes * 30 ,
+                st.session_state.definitiva_dias,
             )
             dias_detraidos_total = (
                 anos_detraidos * 360 + meses_detraidos * 30 + dias_detraidos
