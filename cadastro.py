@@ -66,7 +66,16 @@ def app():
         with col111:
             pass
         with col222:
-            
+            def gerar_id_unico():
+                conn = sqlite3.connect('cadastro.db')
+                cursor = conn.cursor()
+                while True:
+                    id_aleatorio = random.randint(0, 99999)  # Gera um número aleatório de 5 dígitos
+                    cursor.execute("SELECT id FROM delinquentes WHERE id = ?", (id_aleatorio,))
+                    resultado = cursor.fetchone()
+                    if not resultado:  # Se o ID não existir no banco, ele é único
+                        conn.close()
+                        return id_aleatorio
             submitted = st.form_submit_button("Salvar", use_container_width=True, type="secondary")
             if submitted:
                 # Captura a data e o horário atual
@@ -74,8 +83,8 @@ def app():
                 hora_atual = datetime.now().strftime('%H:%M:%S')  # Formato de hora: HH:MM:SS
 
                 # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ # # §§§§§§§§§§§§§§§§ #
-                # Gera um ID aleatório de 4 dígitos
-                id_aleatorio = random.randint(0000, 9999)
+                # Gera um ID aleatório de 5 dígitos
+                id_aleatorio = gerar_id_unico()
                 # Conecta ao banco de dados
                 conn = sqlite3.connect('cadastro.db')
                 cursor = conn.cursor()

@@ -57,7 +57,7 @@ def app():
                 conn.close()
             except sqlite3.Error as e:
                 st.error(f"Erro ao acessar o banco de dados: {e}")
-    col903, col904, col905 = st.columns([.25, 1, .25])
+    col903, col904, col905 = st.columns([.15, 1, .15])
     with col904:
         # Exibir resultado da busca
         squirtle = st.container(border=True)
@@ -65,7 +65,7 @@ def app():
             if st.session_state.resultado:
                 resultado = st.session_state.resultado
                 
-                col100, col101, col102, col103, col104 = st.columns(spec=[1, .50, .50, 1, 1])
+                col100, col101, col102, col103, col104 = st.columns(spec=[1, .50, .50, .50, .50])
                 with col100:
                     st.write(f"**Nome Completo:** {resultado[3]}")
                 with col101:
@@ -73,7 +73,7 @@ def app():
                 with col102:
                     st.write(f"**Estado Civil:** {resultado[5]}")
                 with col103:
-                    st.write(f"**Data de Nascimento:** {resultado[6]}")
+                    st.write(f"**Nascimento:** {resultado[6]}")
                 with col104:
                     st.write(f"**Profissão:** {resultado[7]}")
                 col105, col106, col107, col108, col109, col110 = st.columns(spec=[.75, 1, .50, 1, 1, 1])
