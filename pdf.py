@@ -67,4 +67,4 @@ def gerar_pdf(resultado, pena_provisoria, pena_definitiva):
 
     pdf.save()
     buffer.seek(0)
-    return buffer
+    return buffer.getvalue()

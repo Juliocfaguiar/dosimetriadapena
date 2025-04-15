@@ -325,14 +325,17 @@ def app():
             dias_detraidos = st.number_input("Dias detraídos", min_value=0, max_value=29, step=1, value=0)
 
         if st.button("Aplicar Detração", type="secondary", use_container_width=True):
+            # Calcula os dias totais da pena definitiva
             dias_totais_definitiva = (
                 st.session_state.definitiva_ano * 360 +
                 st.session_state.definitiva_mes * 30 +
                 st.session_state.definitiva_dias
             )
+            # Calcula os dias totais detraídos
             dias_detraidos_total = (
                 anos_detraidos * 360 + meses_detraidos * 30 + dias_detraidos
             )
+            # Calcula o resultado final após a detração
             dias_resultado = dias_totais_definitiva - dias_detraidos_total
             if dias_resultado < 0:
                 dias_resultado = 0
