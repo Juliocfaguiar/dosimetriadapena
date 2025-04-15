@@ -25,6 +25,8 @@ def app():
     if "pena_final_com_detração" not in st.session_state:
         st.session_state.pena_final_com_detração = ""
 
+    
+
     # Variáveis locais
     pena_provisoria = "Não calculada"
     pena_definitiva = "Não calculada"
@@ -306,6 +308,13 @@ def app():
                     else:
                         st.write("A parte decimal é zero, não é possível realizar o cálculo.")
 
+
+        if "definitiva_ano" not in st.session_state:
+            st.session_state.definitiva_ano = 0
+        if "definitiva_mes" not in st.session_state:    
+            st.session_state.definitiva_mes = 0
+        if "definitiva_dias" not in st.session_state:
+            st.session_state.definitiva_dias = 0
         # Detração
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -317,9 +326,9 @@ def app():
 
         if st.button("Aplicar Detração", type="secondary", use_container_width=True):
             dias_totais_definitiva = (
-                st.session_state.definitiva_ano * 360 ,
-                st.session_state.definitiva_mes * 30 ,
-                st.session_state.definitiva_dias,
+                st.session_state.definitiva_ano * 360 +
+                st.session_state.definitiva_mes * 30 +
+                st.session_state.definitiva_dias
             )
             dias_detraidos_total = (
                 anos_detraidos * 360 + meses_detraidos * 30 + dias_detraidos
