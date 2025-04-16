@@ -378,10 +378,8 @@ def app():
         # Botão para gerar e baixar o PDF
         if st.button("Gerar PDF", type="primary", use_container_width=True):
             if "resultado" in st.session_state and st.session_state.resultado:
-                resultado = st.session_state.resultado
-                # pena_provisoria = st.session_state.provisorio if "provisorio" in st.session_state else "Não calculada"
-                pena_provisoria_pdf = st.session_state.provisorio_pdf if "provisorio" in st.session_state else "Não calculada"
-                # pena_definitiva = st.session_state.pena_final_com_detração if "pena_final_com_detração" in st.session_state else "Não calculada"
+                resultado = st.session_state.resultado               
+                pena_provisoria_pdf = st.session_state.provisorio_pdf if "provisorio" in st.session_state else "Não calculada"            
                 pena_definitiva_pdf = st.session_state.pena_final_com_detração_pdf if "pena_final_com_detração" in st.session_state else "Não calculada"
     
                 # Gera o PDF
