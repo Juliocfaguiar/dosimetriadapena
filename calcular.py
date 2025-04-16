@@ -327,7 +327,8 @@ def app():
                         mes_disDef = ("0" + "." + totalDef_split[1])
                         mes_disDef = float(mes_disDef)                        
                         finalDef_result = round(mes_disDef * 12,2)
-                        finalDef_result = int(finalDef_result)                     
+                        finalDef_result = int(finalDef_result)
+                        totalDef_split[0] = int(totalDef_split[0])                     
 
                         st.session_state.finalDef_result = finalDef_result
                         st.session_state.totalDef_Anos = totalDef_split[0]
@@ -355,6 +356,8 @@ def app():
             dias_detraidos = st.number_input("Dias detraídos", min_value=0, max_value=29, step=1, value=0)
 
         if st.button("Aplicar Detração", type="secondary", use_container_width=True):
+
+            totalDef_Anos = int(st.session_state.totalDef_Anos) if isinstance(st.session_state.totalDef_Anos, str) else st.session_state.totalDef_Anos
             # Calcula os dias totais da pena definitiva
             dias_totais_definitiva = (
 
@@ -363,7 +366,8 @@ def app():
                 # st.session_state.definitiva_dias
 
                 st.session_state.totalDef_Anos * 360 +
-                st.session_state.finalDef_result * 30
+                st.session_state.finalDef_result * 30 +
+                st.session_state.definitiva_dias
             )
             # Calcula os dias totais detraídos
             dias_detraidos_total = (
