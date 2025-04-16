@@ -5,3 +5,4 @@ numpy==2.2.4
 reportlab==4.3.1
 ydata-profiling==4.16.1
 numba==0.61.0
+pip==25.0.1
