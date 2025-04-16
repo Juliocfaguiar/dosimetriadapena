@@ -2,8 +2,6 @@ streamlit==1.42.0
 streamlit-option-menu==0.4.0
 pandas==2.2.3
 numpy==2.2.4
-reportlab==3.6.12
+reportlab==4.3.1
 ydata-profiling==4.16.1
 numba==0.61.0
-reportlab==4.3.1
-pip==25.0.1
