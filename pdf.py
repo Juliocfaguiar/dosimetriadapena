@@ -57,6 +57,9 @@ def gerar_pdf(resultado, pena_provisoria_pdf, pena_definitiva_pdf):
         Local _________________________, Data _____/_________/________
         
         Juiz(a) de Direito
+
+
+        ________________________________________________________
                 """
 
     # Escrevendo a sentença linha por linha

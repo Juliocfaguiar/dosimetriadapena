@@ -165,10 +165,12 @@ def app():
                                 result_strAno = str(resultAno)
                                 split_resultAno = result_strAno.split(".")
                                 if len(split_resultAno) > 1 and split_resultAno[1] != 0:
-                                    decimal_part = int(split_resultAno[1])
-                                    final_resultAno = round((decimal_part / 100) * 12, 2)
-                                    if final_resultAno == 0.6:
-                                        final_resultAno = final_resultAno * 10
+
+                                    decimal_part = ("0" + "." + split_resultAno[1])
+                                    decimal_part = float(decimal_part)
+                                    final_resultAno = round(decimal_part * 12, 2)
+                                    # if final_resultAno == 0.6:
+                                    #     final_resultAno = final_resultAno * 10
                                     calculoFinalBase = row["anoMin"] + int(split_resultAno[0])
                                     calculoFinalBase = int(calculoFinalBase)
                                     final_resultAno = int(final_resultAno)
@@ -228,9 +230,14 @@ def app():
                         ProvisorioTotal = str(ProvisorioTotal)
                         splitProv_resultAno = ProvisorioTotal.split(".")
                         if len(splitProv_resultAno) > 1 and splitProv_resultAno[1] != 0:
-                            decimalProv_part = int(splitProv_resultAno[1])
-                            finalProv_resultAno = (decimalProv_part * 12)
-                            finalProv_resultAno = round(finalProv_resultAno / 1000000000000000, 2)
+                        
+
+                            mes_disProv = ("0" + "." + splitProv_resultAno[1])
+                            mes_disProv = float(mes_disProv)
+                            
+                            finalProv_resultAno = round(mes_disProv * 12,2)
+                            finalProv_resultAno = int(finalProv_resultAno)
+                        
                             finalProv_resultAno = int(finalProv_resultAno)
                             provAno = int(splitProv_resultAno[0])
                             st.session_state.provAno = provAno
@@ -295,11 +302,18 @@ def app():
                     totalDef_Anos = str(totalDef_Anos)
                     totalDef_split = totalDef_Anos.split(".")
                     if len(totalDef_split) > 1 and totalDef_split[1] != 0:
-                        decimalDef_part = int(totalDef_split[1])
-                        finalDef_result = round(decimalDef_part / 1000000000000000, 2)
-                        finalDef_result = int(finalDef_result)
+                        # decimalDef_part = int(totalDef_split[1])
+
+                        mes_Def_part = ("0" + "." + totalDef_split[1])
+                        mes_Def_part = float(mes_Def_part)                        
+                        finalDef_resultado = round(mes_Def_part * 12,2)
+                        finalDef_resultado = int(finalDef_resultado) 
+
+
+                        # finalDef_result = round(decimalDef_part / 1000000000000000, 2)
+                        # finalDef_result = int(finalDef_result)
                         totalDef_Anos = int(totalDef_split[0])
-                        st.write(f"Definitiva Anos: {totalDef_Anos} e {finalDef_result} meses")
+                        st.write(f"Definitiva Anos: {totalDef_Anos} e {finalDef_resultado} meses")
                     else:
                         st.write("A parte decimal é zero, não é possível realizar o cálculo.")
                 if Majbox != 0:
@@ -308,18 +322,19 @@ def app():
                     totalDef_Anos = totalDef / 360
                     totalDef_Anos = str(totalDef_Anos)
                     totalDef_split = totalDef_Anos.split(".")
-                    if len(totalDef_split) > 1 and totalDef_split[1] != 0:
-                        decimalDef_part = int(totalDef_split[1])
-                        finalDef_result = round(decimalDef_part / 1000000000000000, 2)
-                        finalDef_result = int(finalDef_result)
-                        totalDef_Anos = int(totalDef_split[0])
+                    if len(totalDef_split) > 1 and totalDef_split[1] != 0:               
+
+                        mes_disDef = ("0" + "." + totalDef_split[1])
+                        mes_disDef = float(mes_disDef)                        
+                        finalDef_result = round(mes_disDef * 12,2)
+                        finalDef_result = int(finalDef_result)                     
 
                         st.session_state.finalDef_result = finalDef_result
-                        st.session_state.totalDef_Anos = totalDef_Anos
-                        st.session_state.pena_definitiva = f"Sentenciado a Pena base de: {totalDef_Anos} ano(s) e {finalDef_result} mês(es)"
+                        st.session_state.totalDef_Anos = totalDef_split[0]
+                        st.session_state.pena_definitiva = f"Sentenciado a Pena base de: {totalDef_split[0]} ano(s) e {finalDef_result} mês(es)"
 
                         
-                        st.write(f"Definitiva Anos: {totalDef_Anos} e {finalDef_result} meses")
+                        st.write(f"Definitiva : {totalDef_split [0]} ano(s)e {finalDef_result} mes(es)")
                     else:
                         st.write("A parte decimal é zero, não é possível realizar o cálculo.")
 

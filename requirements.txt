@@ -6,4 +6,4 @@ reportlab==3.6.12
 ydata-profiling==4.16.1
 numba==0.61.0
 reportlab==4.3.1
-pip install --upgrade pip
+pip==25.0.1
