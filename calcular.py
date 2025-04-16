@@ -16,6 +16,8 @@ def app():
         st.session_state.pena_base = ""
     if "provisorio" not in st.session_state:
         st.session_state.provisorio = ""
+    if "provisorio_pdf" not in st.session_state:
+        st.session_state.provisorio_pdf = ""
     if "calculoFinalBase" not in st.session_state:
         st.session_state.calculoFinalBase = None
     if "final_resultAno" not in st.session_state:
@@ -24,6 +26,12 @@ def app():
         st.session_state.provAno = None
     if "pena_final_com_detração" not in st.session_state:
         st.session_state.pena_final_com_detração = ""
+    if "pena_final_com_detração_pdf" not in st.session_state:
+        st.session_state.pena_final_com_detração_pdf = ""
+    if "totalDef_Anos" not in st.session_state:
+        st.session_state.totalDef_Anos = None
+    if "finalDef_result" not in st.session_state:
+        st.session_state.finalDef_result = None
 
     
 
@@ -229,6 +237,7 @@ def app():
                             st.session_state.finalProv_resultAno = finalProv_resultAno
                             st.write(f"Pena Provisória é de: {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)")
                             st.session_state.provisorio = f"Pena Provisória é de: {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)"
+                            st.session_state.provisorio_pdf = f" {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)"
 
         # Pena Definitiva
         Minbox = 0
@@ -304,6 +313,12 @@ def app():
                         finalDef_result = round(decimalDef_part / 1000000000000000, 2)
                         finalDef_result = int(finalDef_result)
                         totalDef_Anos = int(totalDef_split[0])
+
+                        st.session_state.finalDef_result = finalDef_result
+                        st.session_state.totalDef_Anos = totalDef_Anos
+                        st.session_state.pena_definitiva = f"Sentenciado a Pena base de: {totalDef_Anos} ano(s) e {finalDef_result} mês(es)"
+
+                        
                         st.write(f"Definitiva Anos: {totalDef_Anos} e {finalDef_result} meses")
                     else:
                         st.write("A parte decimal é zero, não é possível realizar o cálculo.")
@@ -327,14 +342,20 @@ def app():
         if st.button("Aplicar Detração", type="secondary", use_container_width=True):
             # Calcula os dias totais da pena definitiva
             dias_totais_definitiva = (
-                st.session_state.definitiva_ano * 360 +
-                st.session_state.definitiva_mes * 30 +
-                st.session_state.definitiva_dias
+
+                # st.session_state.definitiva_ano * 360 +
+                # st.session_state.definitiva_mes * 30 +
+                # st.session_state.definitiva_dias
+
+                st.session_state.totalDef_Anos * 360 +
+                st.session_state.finalDef_result * 30
             )
             # Calcula os dias totais detraídos
             dias_detraidos_total = (
                 anos_detraidos * 360 + meses_detraidos * 30 + dias_detraidos
             )
+
+            
             # Calcula o resultado final após a detração
             dias_resultado = dias_totais_definitiva - dias_detraidos_total
             if dias_resultado < 0:
@@ -345,33 +366,38 @@ def app():
             st.session_state.pena_final_com_detração = (
                 f"Pena final com detração: {anos_finais} ano(s), "
                 f"{meses_finais} mês(es) e {dias_finais} dia(s)"
+                
+            )
+            st.session_state.pena_final_com_detração_pdf = (
+                f" {anos_finais} ano(s), "
+                f"{meses_finais} mês(es) e {dias_finais} dia(s)"
             )
             st.success(f"✅ {st.session_state.pena_final_com_detração}")
 
 
-
-
-
-            gerar_pdf(resultado, pena_provisoria, pena_definitiva)
-            
-            # Botão para gerar PDF
-            if st.button("Gerar PDF", type="primary", use_container_width=True):
-                if "resultado" in st.session_state and st.session_state.resultado:
-                    resultado = st.session_state.resultado
-                    pena_provisoria = st.session_state.provisorio if "provisorio" in st.session_state else "Não calculada"
-                    pena_definitiva = f"{totalDef_Anos} ano(s) e {finalDef_result} mês(es)" if "totalDef_split" in locals() else "Não calculada"
-                    pdf_buffer = gerar_pdf(resultado, pena_provisoria, pena_definitiva)
-                    st.download_button(
-                        label="Baixar PDF",
-                        data=pdf_buffer,
-                        file_name="relatorio_sentenca.pdf",
-                        mime="application/pdf"
-                    )
-                else:
-                    st.error("Por favor, realize o cálculo da pena antes de gerar o PDF.")
-
+        # Botão para gerar e baixar o PDF
+        if st.button("Gerar PDF", type="primary", use_container_width=True):
+            if "resultado" in st.session_state and st.session_state.resultado:
+                resultado = st.session_state.resultado
+                # pena_provisoria = st.session_state.provisorio if "provisorio" in st.session_state else "Não calculada"
+                pena_provisoria_pdf = st.session_state.provisorio_pdf if "provisorio" in st.session_state else "Não calculada"
+                # pena_definitiva = st.session_state.pena_final_com_detração if "pena_final_com_detração" in st.session_state else "Não calculada"
+                pena_definitiva_pdf = st.session_state.pena_final_com_detração_pdf if "pena_final_com_detração" in st.session_state else "Não calculada"
     
-    
+                # Gera o PDF
+                pdf_buffer = gerar_pdf(resultado, pena_provisoria_pdf, pena_definitiva_pdf).getvalue()
+                
+                # Botão para download do PDF
+                st.download_button(
+                    label="Baixar PDF",
+                    data=pdf_buffer,
+                    file_name="relatorio_sentenca.pdf",
+                    mime="application/pdf",
+                    key="download_pdf_button"
+                )
+            else:
+                st.error("Por favor, realize o cálculo da pena antes de gerar o PDF.")
+                
 
 
 
