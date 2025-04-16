@@ -1,7 +1,6 @@
-streamlit==1.29.0
+streamlit>=1.36
 streamlit-option-menu==0.4.0
 pandas==2.2.3
 numpy==1.23.5
 reportlab==4.3.1
 ydata-profiling==4.16.1
-matplotlib<=3.10
