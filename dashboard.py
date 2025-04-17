@@ -17,34 +17,37 @@ def app():
         st.error(f"Erro ao acessar o banco de dados: {e}")
         return
     
-    # Exibe os dados em uma tabela
-    # st.subheader("Tabela de Delinquentes")
-
     dfnew = df[["NomeCompleto","Nacionalidade","EstadoC","DataNasc","Profissao","CPF",
     "Endereco","Numero","Bairro","Cidade","Estado","Genero","Etnia","Acuzacao","txt"]]
     st.dataframe(dfnew,use_container_width=True,hide_index =True)
-    
-    # Exibe métricas
-    # st.subheader("Métricas")
-    # total_delinquentes = len(df)
 
-    # nacionalidades = df["nacionalidade"].nunique() if "nacionalidade" in df.columns else 0
-    # acusacoes = df["acusacao"].nunique() if "acusacao" in df.columns else 0
-
-    col1, col2, col3 = st.columns([1, .11, 1],vertical_alignment ='center',border=True)
+    col1, col2, col3 = st.columns([1, .11, 1],vertical_alignment ='center')
     with col1:
         pass
-        # st.metric("Total ", total_delinquentes)
+      
     with col2:
         acusados = dfnew["Acuzacao"].unique()
         st.metric("Delitos", len(acusados)) 
         
-        # st.metric("Nacionalidades Únicas", nacionalidades)
+       
     with col3:
         pass
-        # st.metric("Tipos de Acusação", acusacoes)
+       
 
 
     # st.scatter_chart(df, x="Data", y="Acuzacao", use_container_width=True,x_label= "Tempo",y_label = "Artigos",color = "Acuzacao",size ="Acuzacao")
-    profile = ProfileReport(dfnew, title="Relatório de Perfil dos Dados", explorative=True)
-    st_profile_report(profile)
+    # profile = ProfileReport(dfnew, title="Relatório de Perfil dos Dados", explorative=True)
+    # st_profile_report(profile)
+
+
+    pikachu_df = pd.read_csv("localizacao.csv")
+
+    # Remove linhas com valores nulos nas colunas latitude e longitude
+    pikachu_df = pikachu_df.dropna(subset=["latitude", "longitude"])
+
+    # Certifique-se de que latitude e longitude são do tipo numérico
+    pikachu_df["latitude"] = pd.to_numeric(pikachu_df["latitude"], errors="coerce")
+    pikachu_df["longitude"] = pd.to_numeric(pikachu_df["longitude"], errors="coerce")
+
+    # Exibe o mapa
+    st.map(pikachu_df, zoom=4, use_container_width=True)
