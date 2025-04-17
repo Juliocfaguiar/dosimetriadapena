@@ -26,8 +26,7 @@ def app():
         pass
       
     with col2:
-        acusados = dfnew["Acuzacao"].unique()
-        st.metric("Delitos", len(acusados)) 
+        pass
         
        
     with col3:
