@@ -10,16 +10,16 @@ st.set_page_config(
 
 class Multiapp:
     
-    def __init__(self):  # CORRIGIDO: __int__ -> __init__
+    def __init__(self):
         self.apps = []
 
     def add_app(self, title, function):
-        self.apps.append({  # CORRIGIDO: self.app -> self.apps
+        self.apps.append({
             "title": title,
             "function": function
         })
 
-    def run(self):  # CORRIGIDO: Adicionado 'self' e indentado corretamente
+    def run(self):
         app = option_menu(
             None,
             ['Home', 'Calcular', 'Cadastro de Delito', 'Dashboard'],
@@ -38,6 +38,6 @@ class Multiapp:
         elif app == "Dashboard":
             dashboard.app()
 
-# Criar e executar a instância corretamente
+# Executar o app
 app = Multiapp()
 app.run()
