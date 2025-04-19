@@ -113,13 +113,14 @@ def app():
                 ''')
 
                 # Insere os dados no banco
-                cursor.execute('''
-                    INSERT INTO delinquentes (
-                        id, Data, Hora, NomeCompleto, Nacionalidade, EstadoC, DataNasc, Profissao, CPF, Endereco, Numero, Comp, Bairro, Estado, Genero, Etnia, Acuzacao, txt
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (
-                    id_aleatorio, data_atual, hora_atual, NomeCompleto, Nacionalidade, EstadoC, dataNasc, Profissao, CPF, Endereco, Numero, Bairro,Cidade, Estado, Genero, Etnia, Acuzacao, txt
-                ))
+            cursor.execute('''
+            INSERT INTO delinquentes (
+        id, Data, Hora, NomeCompleto, Nacionalidade, EstadoC, DataNasc, Profissao, CPF, Endereco, Numero, Bairro, Cidade, Estado, Genero, Etnia, Acuzacao, txt
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+''', (
+    id_aleatorio, data_atual, hora_atual, NomeCompleto, Nacionalidade, EstadoC, dataNasc, Profissao, CPF, Endereco, Numero, Bairro, Cidade, Estado, Genero, Etnia, Acuzacao, txt
+))
+
                 # Obtém o ID da última linha inserida
                 
 
