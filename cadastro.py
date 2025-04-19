@@ -113,7 +113,7 @@ def app():
                 ''')
 
                 # Insere os dados no banco
-            cursor.execute('''
+cursor.execute('''
 INSERT INTO delinquentes (
         id, Data, Hora, NomeCompleto, Nacionalidade, EstadoC, DataNasc, Profissao, CPF, Endereco, Numero, Bairro, Cidade, Estado, Genero, Etnia, Acuzacao, txt
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
