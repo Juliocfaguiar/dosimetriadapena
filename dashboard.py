@@ -40,10 +40,10 @@ def app():
 
 
     pikachu_df = pd.read_csv("localizacao.csv")
-
+    # pikachu_df = pikachu_df.drop(columns=["cidade"])
     # Remove linhas com valores nulos nas colunas latitude e longitude
     pikachu_df = pikachu_df.dropna(subset=["latitude", "longitude"])
-
+    # st.table(pikachu_df)
     # Certifique-se de que latitude e longitude são do tipo numérico
     pikachu_df["latitude"] = pd.to_numeric(pikachu_df["latitude"], errors="coerce")
     pikachu_df["longitude"] = pd.to_numeric(pikachu_df["longitude"], errors="coerce")
