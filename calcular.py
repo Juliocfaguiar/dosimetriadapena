@@ -187,30 +187,32 @@ def app():
             st.write(st.session_state.pena_base)
 
         # Causas Atenuantes e Agravantes
-        provbox = 0
+        provboxmin = 0
+        provboxmax = 0
+
         col3, col4 = st.columns(spec=[1, 1])
         with col3:
             st.subheader("Causas Atenuantes", divider="green")
             menoridade = st.checkbox("Menoridade", key="menoridade", value=st.session_state.get("menoridade", False))
             if menoridade:
-                provbox += 1
+                provboxmin += 1
             confissao = st.checkbox("Confissão", key="confissao", value=st.session_state.get("confissao", False))
             if confissao:
-                provbox += 1
+                provboxmin += 1
             desconhecimento_da_lei = st.checkbox("Desconhecimento da Lei", key="desconhecimento_da_lei", value=st.session_state.get("desconhecimento_da_lei", False))
             if desconhecimento_da_lei:
-                provbox += 1
+                provboxmin += 1
         with col4:
             st.subheader("Causas Agravantes", divider="red")
             concurso_de_pessoas = st.checkbox("Concurso de Pessoas", key="concurso_de_pessoas", value=st.session_state.get("concurso_de_pessoas", False))
             if concurso_de_pessoas:
-                provbox += 1
+                provboxmax += 1
             reincidencia = st.checkbox("Reincidência", key="reincidencia", value=st.session_state.get("reincidencia", False))
             if reincidencia:
-                provbox += 1
+                provboxmax += 1
             motivo_futil = st.checkbox("Motivo Fútil", key="motivo_futil", value=st.session_state.get("motivo_futil", False))
             if motivo_futil:
-                provbox += 1
+                provboxmax += 1
 
         # Botão para calcular a pena provisória
         if "calculoFinalBase" in st.session_state and "final_resultAno" in st.session_state:
@@ -220,8 +222,9 @@ def app():
                 totalDias = diasAno + diasMes
                 Charmeleon = st.button("Calcular Pena Provisória", type="primary", use_container_width=True)
                 if Charmeleon:
-                    if provbox > 0:
-                        totalDias_provBox = totalDias * (provbox / 6)
+                    if provboxmin > 0:
+                        _provBox = totalDias * (provboxmin / 6)
+                        totalDias_provBox = totalDias - _provBox
                         Provisorio = totalDias_provBox / 360
                         Provisorio = Provisorio * 12
                         Provisorio = int(Provisorio)
@@ -246,6 +249,32 @@ def app():
                             st.session_state.provisorio = f"Pena Provisória é de: {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)"
                             st.session_state.provisorio_pdf = f" {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)"
 
+                    if provboxmax > 0:
+                        _provBox = totalDias * (provboxmax / 6)
+                        totalDias_provBox = totalDias + _provBox
+                        Provisorio = totalDias_provBox / 360
+                        Provisorio = Provisorio * 12
+                        Provisorio = int(Provisorio)
+                        ProvisorioTotal = totalDias + (Provisorio * 30)
+                        ProvisorioTotal = ProvisorioTotal / 360
+                        ProvisorioTotal = str(ProvisorioTotal)
+                        splitProv_resultAno = ProvisorioTotal.split(".")
+                        if len(splitProv_resultAno) > 1 and splitProv_resultAno[1] != 0:
+                        
+
+                            mes_disProv = ("0" + "." + splitProv_resultAno[1])
+                            mes_disProv = float(mes_disProv)
+                            
+                            finalProv_resultAno = round(mes_disProv * 12,2)
+                            finalProv_resultAno = int(finalProv_resultAno)
+                        
+                            finalProv_resultAno = int(finalProv_resultAno)
+                            provAno = int(splitProv_resultAno[0])
+                            st.session_state.provAno = provAno
+                            st.session_state.finalProv_resultAno = finalProv_resultAno
+                            st.write(f"Pena Provisória é de: {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)")
+                            st.session_state.provisorio = f"Pena Provisória é de: {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)"
+                            st.session_state.provisorio_pdf = f" {splitProv_resultAno[0]} ano(s) e {finalProv_resultAno} mes(es)"
         # Pena Definitiva
         Minbox = 0
         Majbox = 0
