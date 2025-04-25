@@ -1,24 +1,23 @@
-
 import streamlit as st
 from streamlit_option_menu import option_menu
 import home, calcular, cadastro,dashboard,simulacao
 
 
 st.set_page_config(
-        page_title = "Dosimetria",
-        page_icon =":scales:",
-        layout = "wide",
-
-    )
+    page_title="Dosimetria",
+    page_icon=":scales:",
+    layout="wide",
+)
 
 class Multiapp:
     
-    def __int__(self):
+    def __init__(self):
         self.apps = []
-    def add_app(self,title,function):
-        self.app.append({
-            "title"     : title,
-            "function"  : function
+
+    def add_app(self, title, function):
+        self.apps.append({
+            "title": title,
+            "function": function
         })
 
     def run() :
@@ -37,11 +36,11 @@ class Multiapp:
         
         if app == "Home":
             home.app()
-        if app == "Calcular":
-            calcular.app()  
-        if app == "Cadastro de Delito":
-            cadastro.app()    
-        if app == "Dashboard":
+        elif app == "Calcular":
+            calcular.app()
+        elif app == "Cadastro de Delito":
+            cadastro.app()
+        elif app == "Dashboard":
             dashboard.app()
         if app == "Simulação":
             simulacao.app()
