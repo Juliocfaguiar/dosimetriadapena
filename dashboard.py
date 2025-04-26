@@ -1,10 +1,8 @@
 import streamlit as st
 import pandas as pd
 import sqlite3
-from ydata_profiling import ProfileReport
-from streamlit_pandas_profiling import st_profile_report 
 import plotly.express as px
-import plotly.graph_objects as go
+
 
 def app():
     # st.title("Dashboard ")
@@ -30,15 +28,15 @@ def app():
         st.plotly_chart(fig, use_container_width=True)
       
     with col2:
-            # Gráfico de barras para distribuição por estado
+            
         fig = px.bar(dfnew, x="Estado", title="Distribuição por Estado", color="Estado")
         st.plotly_chart(fig, use_container_width=True)
-        # Gráfico de pizza para distribuição por gênero
+       
         
        
     col3, col4 = st.columns([1, 1],vertical_alignment ='center')
     with col3:
-        # Gráfico de linha para tendência temporal
+        
         if "DataNasc" in dfnew.columns:
             dfnew["Idade"] = (pd.Timestamp.now() - pd.to_datetime(dfnew["DataNasc"], errors="coerce")).dt.days // 365
             trend = dfnew.groupby("Idade")["Acusacao"].count().reset_index(name="Acusações")
@@ -46,7 +44,7 @@ def app():
             st.plotly_chart(fig, use_container_width=True)
     
     with col4:
-        # Treemap para acusações por estado
+       
         fig = px.treemap(dfnew, path=["Estado", "Acusacao"], title="Hierarquia de Acusações por Estado")
         st.plotly_chart(fig, use_container_width=True)
 
@@ -61,7 +59,7 @@ def app():
             st.plotly_chart(fig, use_container_width=True)
 
     with col6:
-    # Histograma para distribuição de idade
+    
         if "DataNasc" in dfnew.columns:
             dfnew["Idade"] = (pd.Timestamp.now() - pd.to_datetime(dfnew["DataNasc"], errors="coerce")).dt.days // 365
             fig = px.histogram(dfnew, x="Idade", nbins=20, title="Distribuição de Idade", color="Genero")
