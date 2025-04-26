@@ -298,7 +298,7 @@ def app():
             quartoMin = st.checkbox("2/3", key="quartoMin", value=st.session_state.get("quartoMin", False))
             if quartoMin:
                 Minbox += 2 / 3
-            quintoMin = st.checkbox("1", key="quintoMin", value=st.session_state.get("quintoMin", False))
+            quintoMin = st.checkbox("1/1", key="quintoMin", value=st.session_state.get("quintoMin", False))
             if quintoMin:
                 Minbox += 1
         with col6:
@@ -315,7 +315,7 @@ def app():
             quartoMaj = st.checkbox("2/3", key="quartoMaj", value=st.session_state.get("quartoMaj", False))
             if quartoMaj:
                 Majbox += 2 / 3
-            quintoMaj = st.checkbox("1", key="quintoMaj", value=st.session_state.get("quintoMaj", False))
+            quintoMaj = st.checkbox("1/1", key="quintoMaj", value=st.session_state.get("quintoMaj", False))
             if quintoMaj:
                 Majbox += 1
 

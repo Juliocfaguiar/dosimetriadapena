@@ -3,6 +3,8 @@ import pandas as pd
 import sqlite3
 from ydata_profiling import ProfileReport
 from streamlit_pandas_profiling import st_profile_report 
+import plotly.express as px
+import plotly.graph_objects as go
 
 def app():
     # st.title("Dashboard ")
@@ -19,34 +21,52 @@ def app():
     
     dfnew = df[["NomeCompleto","Nacionalidade","EstadoC","DataNasc","Profissao","CPF",
     "Endereco","Numero","Bairro","Cidade","Estado","Genero","Etnia","Acuzacao","txt"]]
-    st.dataframe(dfnew,use_container_width=True,hide_index =True)
+    dfnew = dfnew.rename(columns={"Acuzacao": "Acusacao"})
+    # st.dataframe(dfnew,use_container_width=True,hide_index =True)
 
-    col1, col2, col3 = st.columns([1, .11, 1],vertical_alignment ='center')
+    col1, col2 = st.columns([1, 1],vertical_alignment ='center')
     with col1:
-        pass
+        fig = px.pie(dfnew, names="Estado", title="Distribuição por Estado", hole=0.4)
+        st.plotly_chart(fig, use_container_width=True)
       
     with col2:
-        pass
+            # Gráfico de barras para distribuição por estado
+        fig = px.bar(dfnew, x="Estado", title="Distribuição por Estado", color="Estado")
+        st.plotly_chart(fig, use_container_width=True)
+        # Gráfico de pizza para distribuição por gênero
         
        
+    col3, col4 = st.columns([1, 1],vertical_alignment ='center')
     with col3:
-        pass
-       
+        # Gráfico de linha para tendência temporal
+        if "DataNasc" in dfnew.columns:
+            dfnew["Idade"] = (pd.Timestamp.now() - pd.to_datetime(dfnew["DataNasc"], errors="coerce")).dt.days // 365
+            trend = dfnew.groupby("Idade")["Acusacao"].count().reset_index(name="Acusações")
+            fig = px.line(trend, x="Idade", y="Acusações", title="Tendência de Acusações por Idade")
+            st.plotly_chart(fig, use_container_width=True)
+    
+    with col4:
+        # Treemap para acusações por estado
+        fig = px.treemap(dfnew, path=["Estado", "Acusacao"], title="Hierarquia de Acusações por Estado")
+        st.plotly_chart(fig, use_container_width=True)
 
 
-    # st.scatter_chart(df, x="Data", y="Acuzacao", use_container_width=True,x_label= "Tempo",y_label = "Artigos",color = "Acuzacao",size ="Acuzacao")
-    # profile = ProfileReport(dfnew, title="Relatório de Perfil dos Dados", explorative=True)
-    # st_profile_report(profile)
+    
+
+    col5, col6 = st.columns([1, 1],vertical_alignment ='center')
+    with col5:
+        if "DataNasc" in dfnew.columns:
+            dfnew["Idade"] = (pd.Timestamp.now() - pd.to_datetime(dfnew["DataNasc"], errors="coerce")).dt.days // 365
+            fig = px.scatter(dfnew, x="Idade", y="Acusacao", color="Genero", title="Idade vs Acusação")
+            st.plotly_chart(fig, use_container_width=True)
+
+    with col6:
+    # Histograma para distribuição de idade
+        if "DataNasc" in dfnew.columns:
+            dfnew["Idade"] = (pd.Timestamp.now() - pd.to_datetime(dfnew["DataNasc"], errors="coerce")).dt.days // 365
+            fig = px.histogram(dfnew, x="Idade", nbins=20, title="Distribuição de Idade", color="Genero")
+            st.plotly_chart(fig, use_container_width=True)
 
 
-    pikachu_df = pd.read_csv("localizacao.csv")
-    # pikachu_df = pikachu_df.drop(columns=["cidade"])
-    # Remove linhas com valores nulos nas colunas latitude e longitude
-    pikachu_df = pikachu_df.dropna(subset=["latitude", "longitude"])
-    # st.table(pikachu_df)
-    # Certifique-se de que latitude e longitude são do tipo numérico
-    pikachu_df["latitude"] = pd.to_numeric(pikachu_df["latitude"], errors="coerce")
-    pikachu_df["longitude"] = pd.to_numeric(pikachu_df["longitude"], errors="coerce")
 
-    # Exibe o mapa
-    st.map(pikachu_df, zoom=4, use_container_width=True)
+
